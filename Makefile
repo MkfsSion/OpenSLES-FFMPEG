@@ -1,14 +1,14 @@
 PROGRAMNAME=openslplay
 SRCS+=main.c
-SRCS+=opensl_instance.c
-SRCS+=decoder.c
+SRCS+=audioplayer.c
+SRCS+=audiodecoder.c
 
 OBJS=$(SRCS:.c=.o)
 CFLAGS+=-I. -std=c99
-LDFLAGS+= -L/system/lib64 -lOpenSLES -lavformat -lavcodec -lswresample -lavutil -llog -lm -lz
+LDFLAGS+= -L/system/lib64 -lOpenSLES -lavformat -lavcodec -lswresample -lavutil -llog -lm -lz -Wl,-rpath=/system/lib64
 
 all: player
 player: $(OBJS)
-	gcc -o $(PROGRAMNAME) $(OBJS) $(LDFLAGS)
+	$(CC) -o $(PROGRAMNAME) $(OBJS) $(LDFLAGS)
 clean:
-	rm -rf $(PROGRAMNAME) $(OBJS)
+	@rm -rf $(PROGRAMNAME) $(OBJS)
