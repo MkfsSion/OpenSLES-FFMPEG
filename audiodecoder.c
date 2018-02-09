@@ -1,4 +1,4 @@
- #include <libavcodec/avcodec.h>
+#include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 #include <libswresample/swresample.h>
 #include "audiodecoder.h"
@@ -126,4 +126,4 @@ int CreateDecoder(const char *filepath,AudioInfo *infos)
       avformat_free_context(pFormatContext);
       pFormatContext = NULL;
     }
-  }  		
+  }

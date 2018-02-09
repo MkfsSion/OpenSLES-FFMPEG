@@ -3,8 +3,8 @@
 #include <unistd.h>
 #include <pthread.h>
 #include "audioplayer.h"
-static void* timer();
-int main(void){
+extern void *timer(void *);
+int run(void){
   int result = CreatePlayerInstance("/sdcard/netease/cloudmusic/Music/水城新人 - 花葬.mp3");
   if (result != 0) {
     printf("Failed to create player!\n");
@@ -22,8 +22,9 @@ int main(void){
     return -1;
   }
   StartPlay();
-  while (1)
-    ;
+  pthread_t timer2;
+  pthread_create(&timer2, NULL, timer, NULL);
+  pthread_join(timer2,NULL);
   return 0;
 }
 

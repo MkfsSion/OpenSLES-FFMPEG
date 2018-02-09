@@ -2,6 +2,8 @@ PROGRAMNAME=openslplay
 SRCS+=main.c
 SRCS+=audioplayer.c
 SRCS+=audiodecoder.c
+SRCS+=uriplayer.c
+SRCS+=urimain.c
 
 OBJS=$(SRCS:.c=.o)
 CFLAGS+=-I. -std=c99
