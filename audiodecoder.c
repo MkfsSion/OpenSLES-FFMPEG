@@ -78,6 +78,7 @@ int CreateDecoder(const char *filepath,AudioInfo *infos)
       size_t sizes = av_samples_get_buffer_size(NULL, pFrame->channels,pFrame->nb_samples,pCodecContext->sample_fmt, 1);
       if (internalbuffer != NULL) {
         av_free(internalbuffer);
+        internalbuffer = NULL;
       }
       
       internalbuffer = av_malloc(sizeof(uint8_t)*sizes);
@@ -94,11 +95,11 @@ int CreateDecoder(const char *filepath,AudioInfo *infos)
   void ReleaseResources(void) {
     audioStream = -1;
     if (pFrame != NULL) {
-      av_frame_unref(pFrame);
+      av_frame_free(&pFrame);
       pFrame = NULL;
     }
     if (pPacket != NULL) {
-      av_packet_unref(pPacket);
+      av_packet_free(&pPacket);
       pPacket = NULL;
     }
     if (pSwrContext != NULL) {
@@ -110,7 +111,6 @@ int CreateDecoder(const char *filepath,AudioInfo *infos)
       internalbuffer = NULL;
     }
     if (pCodecParameters != NULL) {
-      avcodec_parameters_free(&pCodecParameters);
       pCodecParameters = NULL;
     }
     avcodec_close(pCodecContext);

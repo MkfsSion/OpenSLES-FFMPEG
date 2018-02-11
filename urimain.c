@@ -4,7 +4,7 @@
 #include <pthread.h>
 void *timerfun(void *context);
 
-int main(void)
+int rain(void)
 {
   const char *uri = "/sdcard/netease/cloudmusic/Music/水城新人 - 花葬.mp3";
   int r = CreateUriPlayer(uri);

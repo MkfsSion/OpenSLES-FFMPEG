@@ -1,0 +1,3 @@
+#!/data/data/com.termux/files/usr/bin/bash
+LD_LIBRARY_PATH=/system/lib64:$LD_LIBRARY_PATH
+./openslplay $@

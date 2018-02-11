@@ -4,7 +4,7 @@
 #include <pthread.h>
 #include "audioplayer.h"
 extern void *timer(void *);
-int run(void){
+int main(void){
   int result = CreatePlayerInstance("/sdcard/netease/cloudmusic/Music/水城新人 - 花葬.mp3");
   if (result != 0) {
     printf("Failed to create player!\n");
