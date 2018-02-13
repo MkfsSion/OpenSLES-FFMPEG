@@ -3,6 +3,7 @@ SRCS+=main.c
 SRCS+=audioplayer.c
 SRCS+=audiodecoder.c
 SRCS+=uriplayer.c
+SRCS+=audiotimer.c
 
 ifeq ($(findstring arm,$(shell uname -m)), arm)
 	LIBPATH:=/system/lib

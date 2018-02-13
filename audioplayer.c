@@ -112,8 +112,10 @@ static int CreateAudioPlayer(AudioInfo *audioinfo) {
   EXITFUN;
   return 0;
 }
-int CreatePlayerInstance(const char *filepath)
+int CreatePlayerInstance(const char *filepath,TimerParameters *params)
 {
+  if (params == NULL)
+     return -1;
   AudioInfo *infos = malloc(sizeof(AudioInfo));
   int result = CreateDecoder(filepath, infos);
   if (result != 0) {
@@ -129,6 +131,9 @@ int CreatePlayerInstance(const char *filepath)
   }
   free(infos);
   playerstate = OPENSLES_PLAYERSTATE_PREPARED;
+  params->duration=duration;
+  params->getPlayState=getPlayState;
+  params->getPlayPosition=getPlayPosition;
   return 0;
 }
 void StartPlay(void) {
