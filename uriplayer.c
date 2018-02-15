@@ -32,6 +32,11 @@ void PlayerPlayCallBack(SLPlayItf player,void* context,SLuint32 event)
 
 int CreateUriPlayer(const char *uri)
 {
+  FILE *audiofile = NULL;
+  audiofile = fopen(uri,"rb");
+  if (audiofile == NULL)
+     return -1;
+  fclose(audiofile);
   SLresult result;
   result = slCreateEngine(&engobj, 0, NULL, 0, NULL, NULL);
   EXITFUN;
@@ -138,7 +143,3 @@ SLmillisecond getUriPlayPosition(void) {
   (*player)->GetPosition(player, &milltime);
   return milltime;
 }
-
-  
-                              
-  
