@@ -21,6 +21,8 @@ int CreateDecoder(const char *filepath,AudioInfo *infos)
     ReleaseResources();
     return -1; // Fail to open file.
   }
+
+  av_log_set_level(AV_LOG_QUIET);
   if (avformat_find_stream_info(pFormatContext, NULL) < 0) {
     ReleaseResources();
     return -1; // Fail to find stram info;
@@ -56,14 +58,14 @@ int CreateDecoder(const char *filepath,AudioInfo *infos)
     pCodecContext->sample_rate, pCodecContext->channel_layout,
       pCodecContext->sample_fmt, pCodecContext->sample_rate, 0, NULL);
   swr_init(pSwrContext);
-  pPacket = av_packet_alloc();
-  pFrame = av_frame_alloc();
   infos->channels = pCodecContext->channels;
   infos->samplerate = pCodecContext->sample_rate;
   infos->duration = ((pFormatContext->duration) * 1000) / AV_TIME_BASE;
   return 0;
 }
   int getAudioSource(void **buffer,size_t *buffersize){
+   pPacket = av_packet_alloc();
+   pFrame = av_frame_alloc();
    while(av_read_frame(pFormatContext,pPacket)>=0)
       {
     if (pPacket->stream_index == audioStream) {
@@ -80,13 +82,17 @@ int CreateDecoder(const char *filepath,AudioInfo *infos)
         av_free(internalbuffer);
         internalbuffer = NULL;
       }
-      
+
       internalbuffer = av_malloc(sizeof(uint8_t)*sizes);
           swr_convert(pSwrContext, &internalbuffer, sizes,
                    (const uint8_t **)pFrame->extended_data,
                    pFrame->nb_samples);
       *buffer = internalbuffer;
       *buffersize = sizes;
+      av_packet_unref(pPacket);
+      av_frame_unref(pFrame);
+      pPacket = NULL;
+      pFrame = NULL;
       return 0;
     }
    }
@@ -95,11 +101,11 @@ int CreateDecoder(const char *filepath,AudioInfo *infos)
   void ReleaseResources(void) {
     audioStream = -1;
     if (pFrame != NULL) {
-      av_frame_free(&pFrame);
+      av_frame_unref(pFrame);
       pFrame = NULL;
     }
     if (pPacket != NULL) {
-      av_packet_free(&pPacket);
+      av_packet_unref(pPacket);
       pPacket = NULL;
     }
     if (pSwrContext != NULL) {

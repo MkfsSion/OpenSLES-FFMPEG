@@ -17,5 +17,6 @@ LDFLAGS+= -lOpenSLES -lavformat -lavcodec -lswresample -lavutil -llog -lm -lz -W
 all: player
 player: $(OBJS)
 	$(CC) -o $(PROGRAMNAME) $(OBJS) $(LDFLAGS)
+	@termux-elf-cleaner $(PROGRAMNAME) >> /dev/null
 clean:
 	@rm -rf $(PROGRAMNAME) $(OBJS)
