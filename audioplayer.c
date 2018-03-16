@@ -1,9 +1,10 @@
 #include <SLES/OpenSLES.h>
 #include <SLES/OpenSLES_Android.h>
 #include <stdio.h>
-#include "audiodecoder.h"
-#include "playerstate.h"
-#include "audioplayer.h"
+#include <audiodecoder.h>
+#include <playerstate.h>
+#include <audioplayer.h>
+#include <musiclyrics.h>
 #define EXITFUN                                                                \
   if (result != SL_RESULT_SUCCESS) {                                           \
     ReleasePlayer();                                                           \
@@ -81,7 +82,7 @@ static int CreateAudioPlayer(AudioInfo *audioinfo) {
   format_android.endianness = SL_BYTEORDER_LITTLEENDIAN;
   format_android.representation = SL_ANDROID_PCM_REPRESENTATION_SIGNED_INT;
   duration = audioinfo->duration;
-  printf("Duration:%d\n", duration / 1000);
+  //printf("Duration:%d\n", duration / 1000);
   SLDataSource audiosource = {&dataerbufferque, &format_android};
   SLDataLocator_OutputMix locater_outputmix = {SL_DATALOCATOR_OUTPUTMIX,outputmix};
   SLDataSink datasink = {&locater_outputmix, NULL};
@@ -134,6 +135,11 @@ int CreatePlayerInstance(const char *filepath,TimerParameters *params)
   params->duration=duration;
   params->getPlayState=getPlayState;
   params->getPlayPosition=getPlayPosition;
+  int r=InitLyricsReader(filepath);
+  if (r==-1)
+  {
+      ReleaseAll();
+  }
   return 0;
 }
 void StartPlay(void) {

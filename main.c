@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <pthread.h>
-#include "audioplayer.h"
-#include "audiotimer.h"
+#include <audioplayer.h>
+#include <audiotimer.h>
 
 extern void *timer(void *);
 int main(int argc,char **argv){

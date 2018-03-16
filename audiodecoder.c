@@ -1,7 +1,7 @@
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 #include <libswresample/swresample.h>
-#include "audiodecoder.h"
+#include <audiodecoder.h>
 
 static AVFormatContext *pFormatContext = NULL;
 static AVCodec *pCodec = NULL;
@@ -34,7 +34,6 @@ int CreateDecoder(const char *filepath,AudioInfo *infos)
       audioStream = i;
     }
   }
-  av_dump_format(pFormatContext, 0, filepath, 0);
   if (audioStream == -1) {
     ReleaseResources();
     return -1; // No audio stream found.

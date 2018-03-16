@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <pthread.h>
-#include "audiotimer.h"
+#include <audiotimer.h>
+#include <musiclyrics.h>
 
 static void *AudioTimer(void*);
 static void ReleaseTimer(void);
@@ -37,14 +38,16 @@ static void* AudioTimer(void *params)
 {
   TimerParameters *tparams = (TimerParameters *)params;
   while (tparams->getPlayState() == SL_PLAYSTATE_PLAYING) {
-    sleep(1);
+      sleep(1);
     if (tparams->getPlayState() != SL_PLAYSTATE_PLAYING) {
       break;
-    }
-    printf("position(s)/duartion(s):%d/%d\n", tparams->getPlayPosition() / 1000,
-           tparams->duration / 1000);
+}
+//SLmillisecond nowpos=tparams->getPlayPosition();
+    printf("位置/时长:%d/%d    %s\n", tparams->getPlayPosition() / 1000,
+           tparams->duration / 1000,getLyricsStr(tparams->getPlayPosition()));
   }
   free(params);
+  ReleaseLyricsReader();
   pthread_exit(NULL);
   return NULL;
 }

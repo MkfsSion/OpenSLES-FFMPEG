@@ -1,7 +1,7 @@
 #include <SLES/OpenSLES.h>
 #include <SLES/OpenSLES_Android.h>
-#include "playerstate.h"
-#include "uriplayer.h"
+#include <playerstate.h>
+#include <uriplayer.h>
 
 #define EXITFUN                                                                \
   if (result != SL_RESULT_SUCCESS) {                                           \
