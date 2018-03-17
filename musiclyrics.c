@@ -4,17 +4,26 @@
 
 static int lrcindex=-1;
 static ArrayList *reslist=NULL;
+static int valid=0;
 
-static char *getLyricsSuffix(const char *filename);
+static char *getLyricsFilePath(const char *filename);
 static inline void ResourceListDestroy(ArrayList *list);
 
-int InitLyricsReader(const char *filename)
+int isLyricsReaderEnable(void)
 {
-    FILE *pfile=fopen(filename,"rb");
-    if (pfile==NULL)
+    return valid;
+}
+
+int InitLyricsReader(const char *rfilename,const char *lrcfilename)
+{
+    FILE *pfile=fopen(rfilename,"rb");
+    FILE *lrcfile=fopen(lrcfilename,"rb");
+    if (pfile==NULL&&lrcfile==NULL)
         return -1;
+    if (lrcfile==NULL)
+    {
     fclose(pfile);
-    char *lrcpath=getLyricsSuffix(filename);
+    char *lrcpath=getLyricsFilePath(rfilename);
     if (lrcpath==NULL)
         return -1;
     FILE *plrcfile=fopen(lrcpath,"rb");
@@ -22,12 +31,22 @@ int InitLyricsReader(const char *filename)
     if (plrcfile==NULL)
         return -1;
     reslist=getResolvedLyrics(plrcfile);
+    }
+    else
+    {
+        if (pfile!=NULL)
+        {
+            fclose(pfile);
+        }
+        reslist=getResolvedLyrics(lrcfile);
+    }
     if (reslist==NULL)
         return -1;
+    valid=1;
     return 0;
 }
 
-static char *getLyricsSuffix(const char *filename)
+static char *getLyricsFilePath(const char *filename)
 {
     int charindex=0;
     int len=strlen(filename);

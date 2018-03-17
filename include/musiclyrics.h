@@ -8,7 +8,8 @@ typedef struct LyricsInfo
     char *lyrics;
 } LyricsInfo;
 ArrayList *getResolvedLyrics(FILE *fptr);
-int InitLyricsReader(const char *filename);
+int InitLyricsReader(const char *rfilename,const char *lrcfilename);
 void ReleaseLyricsReader(void);
 char *getLyricsStr(uint32_t timeline);
+int isLyricsReaderEnable(void);
 #endif /* MUSICLYRICS_H_ */

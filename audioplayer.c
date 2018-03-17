@@ -135,11 +135,7 @@ int CreatePlayerInstance(const char *filepath,TimerParameters *params)
   params->duration=duration;
   params->getPlayState=getPlayState;
   params->getPlayPosition=getPlayPosition;
-  int r=InitLyricsReader(filepath);
-  if (r==-1)
-  {
-      ReleaseAll();
-  }
+  int r=InitLyricsReader(filepath,NULL);
   return 0;
 }
 void StartPlay(void) {
