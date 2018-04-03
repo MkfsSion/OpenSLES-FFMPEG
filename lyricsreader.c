@@ -6,7 +6,9 @@
 static ArrayList *getLyricsList(FILE *fptr);
 static ArrayList *ResolveInfo(ArrayList *infolist);
 static uint32_t ResolveTimeline(char *timechar);
+#ifdef DEBUG
 static inline void printf_table(ArrayList *rlist);
+#endif
 static void DataDestroy(ArrayList *list);
 static int isLargeSize(FILE *fptr);
 static void LyricsListQuickSort(ArrayList *rlist,int32_t left,int32_t right);
@@ -86,7 +88,9 @@ ArrayList *getResolvedLyrics(FILE *fptr)
     ArrayList *list=getLyricsList(fptr);
     ArrayList *rlist=ResolveInfo(list);
     LyricsListQuickSort(rlist,0,rlist->length(rlist));
+#ifdef DEBUF
     printf_table(rlist);
+#endif
     DataDestroy(list);
     fclose(fptr);
     return rlist;
@@ -113,6 +117,7 @@ static void DataDestroy(ArrayList *list)
     }
 }
 
+#ifdef DEBUG
 static void printf_table(ArrayList *rlist)
 {
     LyricsInfo *lrcinfo;
@@ -124,6 +129,7 @@ static void printf_table(ArrayList *rlist)
         printf("%s\n",lrcinfo->lyrics);
     }
 }
+#endif
 
 static ArrayList *getLyricsList(FILE *fptr)
 {

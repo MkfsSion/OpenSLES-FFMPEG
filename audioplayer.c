@@ -5,6 +5,8 @@
 #include <playerstate.h>
 #include <audioplayer.h>
 #include <musiclyrics.h>
+#define printerr(x) \
+    printf(x);
 #define EXITFUN                                                                \
   if (result != SL_RESULT_SUCCESS) {                                           \
     ReleasePlayer();                                                           \
@@ -120,14 +122,17 @@ int CreatePlayerInstance(const char *filepath,TimerParameters *params)
   AudioInfo *infos = malloc(sizeof(AudioInfo));
   int result = CreateDecoder(filepath, infos);
   if (result != 0) {
+    printerr("Error:Can not create audio decoder.\n")
     return -1;
   }
   if (infos == NULL) {
+    printerr("Error:Can not alloca memory for info.\n")
     return -1;
   }
   result = CreateAudioPlayer(infos);
   if (result != 0) {
     free(infos);
+    printerr("Failed to creste instance player.\n")
     return -1;
   }
   free(infos);
