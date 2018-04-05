@@ -5,6 +5,7 @@
 #include <playerstate.h>
 #include <audioplayer.h>
 #include <musiclyrics.h>
+#include <musicinfo.h>
 #define printerr(x) \
     printf(x);
 #define EXITFUN                                                                \
@@ -115,10 +116,11 @@ static int CreateAudioPlayer(AudioInfo *audioinfo) {
   EXITFUN;
   return 0;
 }
-int CreatePlayerInstance(const char *filepath,TimerParameters *params)
+int CreatePlayerInstance(MusicInfo *minfo)
 {
-  if (params == NULL)
-     return -1;
+  if (!minfo)
+      return -1;
+  const char *filepath = minfo->uri;
   AudioInfo *infos = malloc(sizeof(AudioInfo));
   int result = CreateDecoder(filepath, infos);
   if (result != 0) {
@@ -137,15 +139,24 @@ int CreatePlayerInstance(const char *filepath,TimerParameters *params)
   }
   free(infos);
   playerstate = OPENSLES_PLAYERSTATE_PREPARED;
+  TimerParameters *params = (TimerParameters *) malloc(sizeof(TimerParameters));
   params->duration=duration;
   params->getPlayState=getPlayState;
   params->getPlayPosition=getPlayPosition;
-  int r=InitLyricsReader(filepath,NULL);
+  CreateTimer(params);
+  struct LyricsOptions *lrc_options = minfo->lrc_options;
+  if (lrc_options->has_lyrics == -1) {
+      InitLyricsReader(filepath,NULL);
+  } else {
+      InitLyricsReaderWithOptions(lrc_options);
+  }
+  destroyLyricsOptions(minfo->lrc_options);
+  free(minfo);
   return 0;
 }
 void StartPlay(void) {
   PLAYEXIT;
-  (*player)->SetPlayState(player, SL_PLAYSTATE_PLAYING);
+  (*player)->SetPlayState(player,SL_PLAYSTATE_PLAYING);
   BufferqueCallback(androidbufferque, NULL);
 }
 void StopPlay(void) {

@@ -13,7 +13,7 @@ else ifeq ($(findstring aarch64,$(shell uname -m)), aarch64)
 	LIBPATH:=/system/lib64
 endif
 OBJS=$(SRCS:.c=.o)
-CFLAGS+=-I. -std=c99 -Iinclude -DDEBUG -DENABLE_CUSTOM_SIG_HANDLER -Wall
+CFLAGS+=-I. -std=c99 -Iinclude -DDEBUG -Wall -Wextra
 LDFLAGS+= -Lprebuilt -larray -lOpenSLES -lavformat -lavcodec -lswresample -lavutil -llog -lm -lz -Wl,-rpath=$(LIBPATH)
 
 all: player

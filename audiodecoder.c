@@ -81,15 +81,14 @@ int CreateDecoder(const char *filepath,AudioInfo *infos)
       }
       size_t sizes = av_samples_get_buffer_size(NULL, pFrame->channels,pFrame->nb_samples,AV_SAMPLE_FMT_S16, 1);
       /*printf("buffer size:%lu\n",sizes);
-      printf("linesize:%d\n",*(pFrame->linesize));
-      printf("Fun buffer size:%lu\n",nsizes);*/
+      printf("linesize:%d\n",pFram);*/
+      /*printf("Fun buffer size:%lu\n",nsizes;;*/
       if (internalbuffer != NULL) {
         av_free(internalbuffer);
         internalbuffer = NULL;
       }
-
       internalbuffer = av_malloc(sizeof(uint8_t)*sizes);
-          swr_convert(pSwrContext, &internalbuffer, sizes,
+          swr_convert(pSwrContext, &internalbuffer, pFrame->nb_samples,
                    (const uint8_t **)pFrame->extended_data,
                    pFrame->nb_samples);
       *buffer = internalbuffer;

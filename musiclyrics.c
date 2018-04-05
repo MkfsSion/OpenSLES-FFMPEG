@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <musiclyrics.h>
+#include <musicinfo.h>
 #include <stdlib.h>
 
 static int lrcindex=-1;
@@ -12,6 +13,20 @@ static inline void ResourceListDestroy(ArrayList *list);
 int isLyricsReaderEnable(void)
 {
     return valid;
+}
+
+int InitLyricsReaderWithOptions(struct LyricsOptions *lrc_options) {
+    if (!lrc_options)
+        return -1;
+    if (lrc_options->has_lyrics) {
+    const char *lrc_path=lrc_options->lyrics_file_path;
+    int r=InitLyricsReader(NULL,lrc_path);
+    destroyLyricsOptions(lrc_options);
+    return r;
+    } else {
+        valid = 0;
+        return -1;
+    }
 }
 
 int InitLyricsReader(const char *rfilename,const char *lrcfilename)

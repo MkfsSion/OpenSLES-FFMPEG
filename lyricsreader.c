@@ -88,7 +88,7 @@ ArrayList *getResolvedLyrics(FILE *fptr)
     ArrayList *list=getLyricsList(fptr);
     ArrayList *rlist=ResolveInfo(list);
     LyricsListQuickSort(rlist,0,rlist->length(rlist));
-#ifdef DEBUF
+#ifdef DEBUG
     printf_table(rlist);
 #endif
     DataDestroy(list);

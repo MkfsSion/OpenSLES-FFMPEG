@@ -6,8 +6,7 @@
 #include <musiclyrics.h>
 
 static void *AudioTimer(void*);
-static void ReleaseTimer(void);
-static pthread_t *timerid = NULL;
+static TimerParameters *tptr;
 int CreateTimer(TimerParameters *params) {
   if (params == NULL)
     return -1;
@@ -17,23 +16,18 @@ int CreateTimer(TimerParameters *params) {
     return -1;
   if (params->duration <= 0)
     return -1; // Necessary check for TimerParameters;
-  pthread_t *timer = malloc(sizeof(pthread_t));
-  pthread_create(timer, NULL, AudioTimer, params);
-  timerid = timer;
+  tptr = params;
   return 0;
 }
 int StartTimer(void) {
-  if (timerid == NULL)
-    return -1;
-  pthread_join(*timerid, NULL);
-  ReleaseTimer();
+    if (!tptr)
+        return -1;
+  pthread_t timerid;
+  pthread_create(&timerid,NULL,AudioTimer,tptr);
+  pthread_join(timerid,NULL);
   return 0;
 }
-static void ReleaseTimer(void) {
-  if (timerid == NULL)
-    return;
-  free(timerid);
-}
+
 static void* AudioTimer(void *params)
 {
   TimerParameters *tparams = (TimerParameters *)params;
