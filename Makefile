@@ -13,12 +13,23 @@ else ifeq ($(findstring aarch64,$(shell uname -m)), aarch64)
 	LIBPATH:=/system/lib64
 endif
 OBJS=$(SRCS:.c=.o)
-CFLAGS+=-I. -std=c99 -Iinclude -DDEBUG -Wall -Wextra
+CFLAGS+=-I. -std=c99 -Iinclude -Wall -Wextra -DDEBUG
 LDFLAGS+= -Lprebuilt -larray -lOpenSLES -lavformat -lavcodec -lswresample -lavutil -llog -lm -lz -Wl,-rpath=$(LIBPATH)
 
+
 all: player
+
+precompile:
+	./precompile.sh
+
+configure: precompile
+	@echo "Configure finished."
+
 player: $(OBJS)
 	$(CC) -o $(PROGRAMNAME) $(OBJS) $(LDFLAGS)
 	@termux-elf-cleaner $(PROGRAMNAME) >> /dev/null
+.PHNOY: clean
 clean:
 	@rm -rf $(PROGRAMNAME) $(OBJS)
+distclean: clean
+	./removefiles.sh

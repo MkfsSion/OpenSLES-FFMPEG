@@ -156,8 +156,11 @@ int CreatePlayerInstance(MusicInfo *minfo)
 }
 void StartPlay(void) {
   PLAYEXIT;
+  if (getPlayState() == SL_PLAYSTATE_PLAYING)
+      return;
   (*player)->SetPlayState(player,SL_PLAYSTATE_PLAYING);
   BufferqueCallback(androidbufferque, NULL);
+  StartTimer();
 }
 void StopPlay(void) {
   PLAYEXIT;

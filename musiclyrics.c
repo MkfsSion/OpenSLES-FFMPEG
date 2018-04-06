@@ -20,6 +20,9 @@ int InitLyricsReaderWithOptions(struct LyricsOptions *lrc_options) {
         return -1;
     if (lrc_options->has_lyrics) {
     const char *lrc_path=lrc_options->lyrics_file_path;
+#ifdef DEBUG
+    printf("The value of lrc_path:%s\n",lrc_path);
+#endif
     int r=InitLyricsReader(NULL,lrc_path);
     destroyLyricsOptions(lrc_options);
     return r;

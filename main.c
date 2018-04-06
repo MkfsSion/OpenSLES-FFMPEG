@@ -45,6 +45,7 @@ int main(int argc,char *argv[]) {
                       }
                       lrc_options->has_lyrics = 1;
                       lrc_options->lyrics_file_path = (char *) malloc(sizeof(char)*(strlen(optarg)+1));
+                      strncpy(lrc_options->lyrics_file_path,optarg,strlen(optarg));
                       lrc_options->lyrics_file_path[strlen(optarg)] = '\0';
                       break;
             case '?' : if (optopt == 'l') {
@@ -55,6 +56,7 @@ int main(int argc,char *argv[]) {
                        printf_usage();
                        destroyLyricsOptions(lrc_options);
                        return -EINVAL;
+            case 'h' : printf_usage(); // Falk through
             default : break;
         }
     }
@@ -102,7 +104,6 @@ int main(int argc,char *argv[]) {
         return -EINVAL;
     }
     StartPlay();
-    StartTimer();
     return 0;
 }
 
@@ -110,4 +111,5 @@ static void printf_usage(void) {
     printf("Usage:openslplay [-n] [-l lyrics_file_path] filepath\n");
     printf("-n:Disable lyrics.\n");
     printf("-l:Specific a lyrics file for this audio file.\n");
+    printf("-h Show help.\n");
 }

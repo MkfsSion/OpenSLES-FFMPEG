@@ -6,7 +6,10 @@
 #include <musiclyrics.h>
 
 static void *AudioTimer(void*);
-static TimerParameters *tptr;
+static void ReleaseTimer(void);
+static pthread_t timer_id = 0;
+static pthread_cond_t pcondt = PTHREAD_COND_INITIALIZER;
+static pthread_mutex_t pmutex = PTHREAD_MUTEX_INITIALIZER;
 int CreateTimer(TimerParameters *params) {
   if (params == NULL)
     return -1;
@@ -16,20 +19,28 @@ int CreateTimer(TimerParameters *params) {
     return -1;
   if (params->duration <= 0)
     return -1; // Necessary check for TimerParameters;
-  tptr = params;
+  pthread_create(&timer_id,NULL,AudioTimer,params);
   return 0;
 }
 int StartTimer(void) {
-    if (!tptr)
+    if (!timer_id)
         return -1;
-  pthread_t timerid;
-  pthread_create(&timerid,NULL,AudioTimer,tptr);
-  pthread_join(timerid,NULL);
+  pthread_cond_signal(&pcondt);
+  pthread_join(timer_id,NULL);
+  ReleaseTimer();
   return 0;
+}
+
+static void ReleaseTimer(void) {
+    pthread_mutex_destroy(&pmutex);
+    pthread_cond_destroy(&pcondt);
+    timer_id = 0;
 }
 
 static void* AudioTimer(void *params)
 {
+  pthread_mutex_lock(&pmutex);
+  pthread_cond_wait(&pcondt,&pmutex);
   TimerParameters *tparams = (TimerParameters *)params;
   int enable=isLyricsReaderEnable();
   while (tparams->getPlayState() == SL_PLAYSTATE_PLAYING) {
@@ -55,5 +66,6 @@ else
   ReleaseLyricsReader();
 }
   pthread_exit(NULL);
+  pthread_mutex_unlock(&pmutex);
   return NULL;
 }
