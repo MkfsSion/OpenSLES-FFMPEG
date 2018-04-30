@@ -39,6 +39,7 @@ void BufferqueCallback(SLAndroidSimpleBufferQueueItf bq, void *context)
   size_t buffersize = 0;
   int back=getAudioSource(&buffer, &buffersize);
   //printf("Position:%d\n", getPlayPosition() / 1000);
+  (void) context;
   if (buffer != NULL && buffersize != 0 && back == 0) {
     (*bq)->Enqueue(bq, buffer, buffersize);
   }
@@ -47,12 +48,12 @@ void BufferqueCallback(SLAndroidSimpleBufferQueueItf bq, void *context)
       StopPlay();
   }
 }
-void PlayerCallBack(SLPlayItf player,void *context,SLuint32 event)
+/*void PlayerCallBack(SLPlayItf player,void *context,SLuint32 event)
 {
   if (event & SL_PLAYEVENT_HEADATEND) {
     StopPlay();
   }
-}
+}*/ // Disable player playback
 static int CreateAudioPlayer(AudioInfo *audioinfo) {
   SLresult result;
   result = slCreateEngine(&engobj, 0, NULL, 0, NULL, NULL);
@@ -100,8 +101,8 @@ static int CreateAudioPlayer(AudioInfo *audioinfo) {
   EXITFUN;
   result = (*playerobj)->GetInterface(playerobj, SL_IID_PLAY, &player);
   EXITFUN;
-  result = (*player)->RegisterCallback(player, PlayerCallBack, NULL);
-  EXITFUN;
+  /*result = (*player)->RegisterCallback(player, PlayerCallBack, NULL);
+  EXITFUN;*/ // Disable player playback
   result = (*playerobj)
                ->GetInterface(playerobj, SL_IID_ANDROIDSIMPLEBUFFERQUEUE,
                               &androidbufferque);
@@ -143,7 +144,6 @@ int CreatePlayerInstance(MusicInfo *minfo)
   params->duration=duration;
   params->getPlayState=getPlayState;
   params->getPlayPosition=getPlayPosition;
-  CreateTimer(params);
   struct LyricsOptions *lrc_options = minfo->lrc_options;
   if (lrc_options->has_lyrics == -1) {
       InitLyricsReader(filepath,NULL);
@@ -152,6 +152,7 @@ int CreatePlayerInstance(MusicInfo *minfo)
   }
   destroyLyricsOptions(minfo->lrc_options);
   free(minfo);
+  CreateTimer(params);
   return 0;
 }
 void StartPlay(void) {

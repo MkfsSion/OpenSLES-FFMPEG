@@ -13,9 +13,9 @@ else ifeq ($(findstring aarch64,$(shell uname -m)), aarch64)
 	LIBPATH:=/system/lib64
 endif
 OBJS=$(SRCS:.c=.o)
-CFLAGS+=-I. -std=c99 -Iinclude -Wall -Wextra -DDEBUG
+CFLAGS+=-I. -std=c99 -Iinclude -Wall -Wextra -DDEBUG -Werror
 LDFLAGS+= -Lprebuilt -larray -lOpenSLES -lavformat -lavcodec -lswresample -lavutil -llog -lm -lz -Wl,-rpath=$(LIBPATH)
-
+CFLAGS+= -fsanitize=address -fno-omit-frame-pointer # Memory leak test
 
 all: player
 

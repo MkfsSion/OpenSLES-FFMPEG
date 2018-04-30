@@ -25,6 +25,8 @@ static SLuint32 playerstate = OPENSLES_PLAYERSTATE_UNINITED;
 
 void PlayerPlayCallBack(SLPlayItf player,void* context,SLuint32 event)
 {
+  (void) context;
+  (void) player;
   if (SL_PLAYEVENT_HEADATEND & event) {
     StopUriPlay();
   }

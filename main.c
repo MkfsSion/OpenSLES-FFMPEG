@@ -33,7 +33,7 @@ int main(int argc,char *argv[]) {
     struct LyricsOptions *lrc_options = initLyricsOptions();
     if (!lrc_options)
         return -ENOMEM;
-    while ((option = getopt(argc,argv,"nl:")) != -1) {
+    while ((option = getopt(argc,argv,"nl:h")) != -1) {
         switch (option) {
             case 'n': if (lrc_options->has_lyrics != -1) {
                           break;
@@ -56,7 +56,8 @@ int main(int argc,char *argv[]) {
                        printf_usage();
                        destroyLyricsOptions(lrc_options);
                        return -EINVAL;
-            case 'h' : printf_usage(); // Falk through
+            case 'h' : printf_usage();
+                       return 0;
             default : break;
         }
     }
@@ -111,5 +112,5 @@ static void printf_usage(void) {
     printf("Usage:openslplay [-n] [-l lyrics_file_path] filepath\n");
     printf("-n:Disable lyrics.\n");
     printf("-l:Specific a lyrics file for this audio file.\n");
-    printf("-h Show help.\n");
+    printf("-h:Show help.\n");
 }

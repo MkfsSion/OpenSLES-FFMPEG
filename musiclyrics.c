@@ -93,7 +93,7 @@ char *getLyricsStr(uint32_t timeline)
 {
     LyricsInfo *lrcinfo;
     LyricsInfo *nextlrcinfo;
-    uint32_t len=reslist->length(reslist);
+    int32_t len=(int32_t) reslist->length(reslist);
     if (lrcindex==-1)
     {
         reslist->get(reslist,0,&lrcinfo);
@@ -137,7 +137,7 @@ static inline void ResourceListDestroy(ArrayList *list)
 {
     LyricsInfo *lrcinfo;
     uint32_t len=list->length(list);
-    for (int i=0;i<len;i++)
+    for (uint32_t i=0;i<len;i++)
     {
         list->get(list,i,&lrcinfo);
         free(lrcinfo);

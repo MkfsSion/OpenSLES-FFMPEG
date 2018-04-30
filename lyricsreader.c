@@ -108,7 +108,7 @@ static void DataDestroy(ArrayList *list)
     }
     else
     {
-        for (int i=0;i<len;i++)
+        for (uint32_t i=0;i<len;i++)
         {
             list->get(list,i,&cptr);
             free(cptr);
@@ -121,7 +121,7 @@ static void DataDestroy(ArrayList *list)
 static void printf_table(ArrayList *rlist)
 {
     LyricsInfo *lrcinfo;
-    for (int i=0;i<rlist->length(rlist);i++)
+    for (uint32_t i=0;i<rlist->length(rlist);i++)
     {
         rlist->get(rlist,i,&lrcinfo);
         printf("Time:%dms",lrcinfo->timeline);
@@ -156,7 +156,7 @@ static ArrayList *ResolveInfo(ArrayList *infolist)
     if (lrclen==0)
         return NULL; // Can resolve empty list;
     char *buffer;
-    for (int i=0;i<lrclen;i++)
+    for (uint32_t i=0;i<lrclen;i++)
     {
         infolist->get(infolist,i,&buffer);
         int size=strlen(buffer);

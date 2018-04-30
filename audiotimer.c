@@ -40,9 +40,9 @@ static void ReleaseTimer(void) {
 static void* AudioTimer(void *params)
 {
   pthread_mutex_lock(&pmutex);
-  pthread_cond_wait(&pcondt,&pmutex);
   TimerParameters *tparams = (TimerParameters *)params;
   int enable=isLyricsReaderEnable();
+  pthread_cond_wait(&pcondt,&pmutex);
   while (tparams->getPlayState() == SL_PLAYSTATE_PLAYING) {
       sleep(1);
     if (tparams->getPlayState() != SL_PLAYSTATE_PLAYING) {

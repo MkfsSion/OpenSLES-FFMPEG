@@ -30,7 +30,7 @@ int CreateDecoder(const char *filepath,AudioInfo *infos)
     ReleaseResources();
     return -1; // Fail to find stram info;
   }
-  for (int i=0;i<pFormatContext->nb_streams;i++)
+  for (uint32_t i=0;i<pFormatContext->nb_streams;i++)
   {
     if (pFormatContext->streams[i]->codecpar->codec_type ==
         AVMEDIA_TYPE_AUDIO) {
