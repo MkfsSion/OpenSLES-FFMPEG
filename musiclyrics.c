@@ -27,6 +27,9 @@ int InitLyricsReaderWithOptions(struct LyricsOptions *lrc_options) {
     destroyLyricsOptions(lrc_options);
     return r;
     } else {
+#ifdef DEBUG
+	printf("Disable lyrics for user setting.\n");
+#endif
         valid = 0;
         return -1;
     }
@@ -36,18 +39,30 @@ int InitLyricsReader(const char *rfilename,const char *lrcfilename)
 {
     FILE *pfile=fopen(rfilename,"rb");
     FILE *lrcfile=fopen(lrcfilename,"rb");
-    if (pfile==NULL&&lrcfile==NULL)
+    if (pfile==NULL&&lrcfile==NULL) {
+#ifdef DEBUG
+	printf("InitLyricsReader:Invalid arguments.\n");
+#endif
         return -1;
+    }
     if (lrcfile==NULL)
     {
     fclose(pfile);
     char *lrcpath=getLyricsFilePath(rfilename);
-    if (lrcpath==NULL)
+    if (lrcpath==NULL) {
+#ifdef DEBUG
+	printf("Error:Failed to get lyrics filename by source file nsme.\n");
+#endif
         return -1;
+    }
     FILE *plrcfile=fopen(lrcpath,"rb");
     free(lrcpath);
-    if (plrcfile==NULL)
+    if (plrcfile==NULL) {
+#ifdef DEBUG
+	printf("Error:Opening file %s error:File not exist.\n",lrcpath);
+#endif
         return -1;
+    }
     reslist=getResolvedLyrics(plrcfile);
     }
     else
@@ -61,6 +76,9 @@ int InitLyricsReader(const char *rfilename,const char *lrcfilename)
     if (reslist==NULL)
         return -1;
     valid=1;
+#ifdef DEBUG
+    printf("Lyrics is eanbled now.\n");
+#endif
     return 0;
 }
 
@@ -93,7 +111,7 @@ char *getLyricsStr(uint32_t timeline)
 {
     LyricsInfo *lrcinfo;
     LyricsInfo *nextlrcinfo;
-    int32_t len=(int32_t) reslist->length(reslist);
+    int64_t len=(int64_t) reslist->length(reslist);
     if (lrcindex==-1)
     {
         reslist->get(reslist,0,&lrcinfo);

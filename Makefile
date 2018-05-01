@@ -15,7 +15,8 @@ endif
 OBJS=$(SRCS:.c=.o)
 CFLAGS+=-I. -std=c99 -Iinclude -Wall -Wextra -DDEBUG -Werror
 LDFLAGS+= -Lprebuilt -larray -lOpenSLES -lavformat -lavcodec -lswresample -lavutil -llog -lm -lz -Wl,-rpath=$(LIBPATH)
-CFLAGS+= -fsanitize=address -fno-omit-frame-pointer # Memory leak test
+#CFLAGS+= -fsanitize=address -fno-omit-frame-pointer # Memory leak test
+#LDFLAGS+= -lasan
 
 all: player
 

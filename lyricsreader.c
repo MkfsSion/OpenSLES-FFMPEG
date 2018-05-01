@@ -72,8 +72,14 @@ static int isLargeSize(FILE *fptr)
     fseek(fptr,0L,SEEK_SET);
     if (size>100*1024)
     {
+#ifdef DEBUG
+	printf("Error:File to large,file size is %u\n",size);
+#endif
         return -1;
     }
+#ifdef DBUG
+    printf("Info:Lyrics File size detected %u\n",size);
+#endif
     return 0;
 }
 
