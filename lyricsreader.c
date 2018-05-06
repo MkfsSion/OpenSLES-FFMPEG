@@ -77,8 +77,8 @@ static int isLargeSize(FILE *fptr)
 #endif
         return -1;
     }
-#ifdef DBUG
-    printf("Info:Lyrics File size detected %u\n",size);
+#ifdef DEBUG
+    printf("Info:Lyrics File size detected %ub\n",size);
 #endif
     return 0;
 }

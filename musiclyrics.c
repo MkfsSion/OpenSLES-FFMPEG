@@ -2,6 +2,7 @@
 #include <musiclyrics.h>
 #include <musicinfo.h>
 #include <stdlib.h>
+#include <config.h>
 
 static int lrcindex=-1;
 static ArrayList *reslist=NULL;
@@ -59,8 +60,9 @@ int InitLyricsReader(const char *rfilename,const char *lrcfilename)
     free(lrcpath);
     if (plrcfile==NULL) {
 #ifdef DEBUG
-	printf("Error:Opening file %s error:File not exist.\n",lrcpath);
+	printf("Error:Opening file %s failed,file not exist.\n",lrcpath);
 #endif
+	never_allow_test("lyrics file failed to open");
         return -1;
     }
     reslist=getResolvedLyrics(plrcfile);
