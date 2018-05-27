@@ -15,9 +15,7 @@ endif
 OBJS=$(SRCS:.c=.o)
 CFLAGS+=-I. -std=c99 -Iinclude -Wall -Wextra
 LDFLAGS+= -Lprebuilt -larray -lOpenSLES -lavformat -lavcodec -lswresample -lavutil -llog -lm -lz -Wl,-rpath=$(LIBPATH)
-#CFLAGS+= -fsanitize=address -fno-omit-frame-pointer # Memory leak test
-#LDFLAGS+= -lasan
-include config.mk
+-include config.mk
 
 ifeq ($(ENABLE_DEBUG),true)
 	CFLAGS += -DDEBUG
@@ -29,7 +27,7 @@ ifneq ($(C_COMPILER),)
 	CC := $(C_COMPILER)
 endif
 
-ifeq ($(NEVER_ALLOW_ERROR),true)
+ifeq ($(strip $(NEVER_ALLOW_ERROR)),true)
 	CFLAGS+= -DNEVER_ALLOW_ERROR
 endif
 
