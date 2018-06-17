@@ -1,6 +1,6 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-if test -d "/prebuilt" || test -d "libarray"
+if test -d "prebuilt" || test -d "libarray"
 then
 unlink include/libarray;
 rm -rf prebuilt;
