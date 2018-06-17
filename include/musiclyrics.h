@@ -1,8 +1,8 @@
 #ifndef MUSICLYRICS_H_
 #define MUSICLYRICS_H_
 #include <stdio.h>
-#include "libarray/array.h"
-#include "musicinfo.h"
+#include <libarray/array.h>
+#include <musicinfo.h>
 typedef struct LyricsInfo
 {
     uint32_t timeline;

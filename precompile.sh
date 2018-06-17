@@ -4,6 +4,10 @@ git clone https://github.com/MkfsSion/libarray libarray;
 ln -sf `pwd`/libarray/include/libarray `pwd`/include/libarray;
 cd libarray;
 make clean&&make static-lib;
+if ! test $? == 0
+then
+	exit $?
+fi
 if ! test -d "../prebuilt"
 then
     rm -fr ../prebuilt

@@ -1,8 +1,8 @@
 #ifndef AUDIOPLAYER_H_
 #define AUDIOPLAYER_H_
 #include <SLES/OpenSLES.h>
-#include "audiotimer.h"
-#include "musicinfo.h"
+#include <audiotimer.h>
+#include <musicinfo.h>
 
 void StartPlay(void);
 void StopPlay(void);
