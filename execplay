@@ -1,7 +1,0 @@
-#!/data/data/com.termux/files/usr/bin/bash
-case $(uname -m) in
-        arm*) LIBPATH=/system/lib;;
-	aarch64*) LIBPATH=/system/lib64;;
-esac
-LD_LIBRARY_PATH=$LIBPATH:$LD_LIBRARY_PATH
-./openslplay $@

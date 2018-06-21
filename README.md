@@ -8,11 +8,12 @@ apt install git clang ffmpeg ffmpeg-dev make
 ## Build
 
 make precompile
+
 make
 
 ## Usage
 
-execplay -h
+openslplay -h
 
 ## Config
 
