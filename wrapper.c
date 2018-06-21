@@ -21,5 +21,9 @@ int main(int argc,const char **argv,const char **envp)
 #if defined(DEBUG)
 	printf("ENV: LD_LIBRARY_PATH:%s\n",buf);
 #endif
-	return execve("./binary",(char *const*)argv,(char *const*)envp);
+	memset(buf,0x0,PATH_MAX);
+	env = getenv("PWD");
+	strncpy(buf,env,strlen(env));
+	strncat(buf,"/binary",sizeof("/binary"));
+	return execve(buf,(char *const*)argv,(char *const*)envp);
 }
