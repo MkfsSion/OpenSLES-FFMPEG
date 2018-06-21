@@ -5,7 +5,6 @@
 int main(int argc,const char **argv,const char **envp)
 {
     (void)argc;
-    (void)argv;
     char buf[PATH_MAX];
     char *env = getenv("LD_LIBRARY_PATH");
 #if defined(ARCH_ARM)
