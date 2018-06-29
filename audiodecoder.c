@@ -15,7 +15,9 @@ static uint8_t *internalbuffer = NULL;
 
 int CreateDecoder(const char *filepath,AudioInfo *infos)
 {
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
   av_register_all();
+#endif
   pFormatContext = avformat_alloc_context();
   int r=0;
   r=avformat_open_input(&pFormatContext, filepath, NULL, NULL);
