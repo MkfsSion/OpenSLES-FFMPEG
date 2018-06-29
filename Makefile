@@ -44,7 +44,7 @@ endif
 all: player
 
 precompile:
-	./precompile.sh
+	@./precompile.sh
 
 configure: precompile
 	@echo "Configure finished."
@@ -60,4 +60,4 @@ clean:
 	@rm -rf $(PROGRAMNAME) $(OBJS) $(WOBJS) binary
 
 distclean: clean
-	./removefiles.sh
+	@./removefiles.sh

@@ -1,5 +1,10 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
+apt install -y git clang ffmpeg ffmpeg-dev make termux-elf-cleaner
+if ! test $? == 0
+then
+	exit $?
+fi
 git clone https://github.com/MkfsSion/libarray libarray;
 ln -sf `pwd`/libarray/include/libarray `pwd`/include/libarray;
 cd libarray;
